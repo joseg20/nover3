@@ -4,10 +4,11 @@
 class Door
 {
 private:
-    Door(); // a door creation without sensor is not allowed.
+    Door(); 
 public:
     Door(MagneticSensor sensor);
     void changeState();
+    MagneticSensor* getSensor();
 private:
     MagneticSensor magneticSensor;
 };

@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = Stage1HelpCode1.0.0
-DISTDIR = /home/jose/Git/nover3/stage2/.tmp/Stage1HelpCode1.0.0
+DISTDIR = /home/jose/GitLab/diaz.gabriel-ortiz.samuel-guillen.jose-tarea3.2023.1/stage2/.tmp/Stage1HelpCode1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
 LIBS          = $(SUBLIBS)    
@@ -55,11 +55,17 @@ OBJECTS_DIR   = ./
 SOURCES       = door.cpp \
 		magnetic_sensor.cpp \
 		main.cpp \
-		sensor.cpp 
+		sensor.cpp \
+		central.cpp \
+		siren.cpp \
+		window.cpp 
 OBJECTS       = door.o \
 		magnetic_sensor.o \
 		main.o \
-		sensor.o
+		sensor.o \
+		central.o \
+		siren.o \
+		window.o
 DIST          = config.txt \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -74,6 +80,7 @@ DIST          = config.txt \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -88,10 +95,17 @@ DIST          = config.txt \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		Stage1HelpCode.pro door.h \
 		magnetic_sensor.h \
-		sensor.h door.cpp \
+		sensor.h \
+		central.h \
+		siren.h \
+		window. \
+		h door.cpp \
 		magnetic_sensor.cpp \
 		main.cpp \
-		sensor.cpp
+		sensor.cpp \
+		central.cpp \
+		siren.cpp \
+		window.cpp
 QMAKE_TARGET  = Stage1HelpCode
 DESTDIR       = 
 TARGET        = Stage1HelpCode
@@ -116,6 +130,7 @@ Makefile: Stage1HelpCode.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qma
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -143,6 +158,7 @@ Makefile: Stage1HelpCode.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qma
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
@@ -210,11 +226,28 @@ magnetic_sensor.o: magnetic_sensor.cpp magnetic_sensor.h \
 
 main.o: main.cpp door.h \
 		magnetic_sensor.h \
-		sensor.h
+		sensor.h \
+		window.h \
+		central.h \
+		siren.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 sensor.o: sensor.cpp sensor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sensor.o sensor.cpp
+
+central.o: central.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o central.o central.cpp
+
+siren.o: siren.cpp siren.h \
+		sensor.h \
+		magnetic_sensor.h \
+		central.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o siren.o siren.cpp
+
+window.o: window.cpp window.h \
+		magnetic_sensor.h \
+		sensor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o window.o window.cpp
 
 ####### Install
 

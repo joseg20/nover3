@@ -12,4 +12,7 @@ void Door::changeState() {
         else
             magneticSensor.setSensorClose();
 }
+MagneticSensor* Door::getSensor() {
+    return &magneticSensor;
+}
 
