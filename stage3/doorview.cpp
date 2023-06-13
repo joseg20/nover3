@@ -42,6 +42,7 @@ void DoorView::setDoorModel(Door * m){
     model=m;
 }
 void DoorView::installMagneticSensor(MagneticSensorView & mv){
+    sensorView = &mv;
     mv.getMagnetView().setRect(doorPanel->rect().right()-mv.getMagnetView().rect().width(),
                                  doorPanel->rect().bottom(),
                                  mv.getMagnetView().rect().width(),
@@ -50,16 +51,17 @@ void DoorView::installMagneticSensor(MagneticSensorView & mv){
                                  switchPillar->boundingRect().height(),
                                  mv.getSwitchView().rect().width(),
                                  mv.getSwitchView().rect().height());
-    mv.getMagnetView().setTransformOriginPoint(mv.getMagnetView().rect().width() / 2,
-                                               mv.getMagnetView().rect().height() / 2); //se establece el punto de origen de la transformación para la vista del imán. Aquí, se coloca en el centro del imán.
+    mv.getMagnetView().setTransformOriginPoint(doorPanel->rect().left(), doorPanel->rect().bottom());
     addToGroup(&mv.getMagnetView());
     addToGroup(&mv.getSwitchView());
 }
 void DoorView::setOpen(){
+    sensorView->getSwitchView().setBrush(Qt::red);
     doorPanel->setRotation(90);
     magnet->setRotation(90);
 }
 void DoorView::setClose(){
+    sensorView->getSwitchView().setBrush(Qt::green);
     doorPanel->setRotation(0);
     magnet->setRotation(0);
 }

@@ -5,6 +5,8 @@
 #include <vector>
 #include "door.h"
 #include "doorview.h"
+#include "window.h"
+#include "windowview.h"
 #include "central.h"
 #include <QtWidgets>
 
@@ -37,6 +39,17 @@ int main(int argc, char *argv[])
         central.addNewSensor(sensor);
         gui.addHouseHollow(doorView);
     }
+
+    for( int i=0; i<nWindows; i++) {
+        int x, y, angle, zone;
+        fin >> x >> y >> angle >> zone;
+        MagneticSensor * sensor = new MagneticSensor(zone);
+        WindowView * windowView = new WindowView(x, y, angle, sensor->getView());
+        new Window(sensor, windowView);
+        central.addNewSensor(sensor);
+        gui.addHouseHollow(windowView);
+    }
+
     gui.show();
     return a.exec();
 }

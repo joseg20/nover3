@@ -5,6 +5,9 @@
 #include <vector>
 #include <QTimer>
 #include "sensor.h"
+#include "door.h"
+#include "doorview.h"
+#include "magneticsensor.h"
 
 class Central : public QObject
 {

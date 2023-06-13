@@ -16,6 +16,5 @@ int Sensor::getZone() const {
 
 void Sensor::setClose(bool isClose) {
     close = isClose;
-    std::cout << "Sensor is " << (close ? "close." : "open.") << std::endl;
 }
 

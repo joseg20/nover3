@@ -1,6 +1,6 @@
 #include "magneticsensor.h"
 
-MagneticSensor::MagneticSensor(int z): Sensor(z, false) {
+MagneticSensor::MagneticSensor(int z): Sensor(z, true) {
     view = new MagneticSensorView();
 }
 void MagneticSensor::setSensorOpen() {

@@ -24,6 +24,7 @@ private:
     QGraphicsRectItem * doorPanel;
     QGraphicsPolygonItem * switchPillar;
     QGraphicsRectItem * magnet;
+    MagneticSensorView *sensorView;
 };
 
 #endif // DOORVIEW_H
