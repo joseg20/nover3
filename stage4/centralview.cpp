@@ -11,6 +11,7 @@ CentralView::CentralView(Central* central) : central(central), armButton(new QPu
     addSiren();
     addLabel();
     addSeparator(1);
+    central->setSirenView(sirenView);
 }
 void CentralView::addButtons()
 {
@@ -29,8 +30,12 @@ void CentralView::addButtons()
 
     // connect buttons to arm and disarm functions
     connect(armButton, &QPushButton::clicked, this, [this]() {
-        central->armSystem();
-        statusLabel->setText("System status: Armed");
+        if (central->isAlarmOn() == true){
+            statusLabel->setText("System status: not armed!");
+        } else {
+            central->armSystem();
+            statusLabel->setText("System status: Armed");
+        }
     });
     connect(disarmButton, &QPushButton::clicked, this, [this]() {
         central->disarmSystem();
@@ -38,8 +43,6 @@ void CentralView::addButtons()
     });
 
 }
-
-
 
 void CentralView::addLabel()
 {
@@ -82,7 +85,10 @@ void CentralView::addSeparator(int row)
 
     QGraphicsGridLayout *layout = static_cast<QGraphicsGridLayout*>(this->layout());
     layout->addItem(frameProxy, row, 0, 1, 2);  // Agrega la línea de separación en la fila especificada, extendiéndose a lo largo de ambas columnas
-
 }
 
 
+void CentralView::StopSirenBlinking()
+{
+    sirenView->stopBlinking();
+}

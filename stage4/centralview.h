@@ -6,7 +6,7 @@
 #include <QGraphicsWidget>
 #include <QPushButton>
 #include <QGraphicsProxyWidget>
-
+class Central; // Declaración anticipada de la clase Central para evitar un conflicto circular de inclusión
 class CentralView : public QGraphicsWidget
 {
 
@@ -16,7 +16,7 @@ public:
     void addSiren();
     void addLabel();
     void addSeparator(int row);
-
+    void StopSirenBlinking();
 
 private:
     Central* central;

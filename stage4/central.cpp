@@ -1,10 +1,13 @@
 #include "central.h"
+#include "central.h"
+#include "sirenview.h"
 #include <iostream>
 
 Central::Central(QObject *parent)
     : QObject(parent), timer(new QTimer(this)) {
     connect(timer, SIGNAL(timeout()), this, SLOT(checkZones())); //Editado
     timer->start(200);
+    alarmAlert = false;
 }
 
 void Central::addNewSensor(Sensor *ps) {
@@ -13,13 +16,17 @@ void Central::addNewSensor(Sensor *ps) {
 
 void Central::checkZones()
 {
-    if(alarmArmed) { // only check zones if the alarm is armed
         bool closeZones[2];
         checkCloseZones(closeZones);
         if (!(closeZones[0] && closeZones[1])){
             std::cout << "Alguna zona esta abierta." << std::endl;
+            if(alarmArmed){
+                sirenView->startBlinking();
+            }
+            alarmAlert = true;
+        } else if (closeZones[0] && closeZones[1]){
+            alarmAlert= false;
         }
-    }
 }
 
 
@@ -32,23 +39,30 @@ void Central::checkCloseZones(bool closeZones[]) {
 
 void Central::armSystem()
 {
-    if(!alarmArmed) {  // check if the alarm is not already armed
+    if(!alarmAlert) {  // check if the alarm is not already armed
         alarmArmed = true;
     }
 }
 
-void Central::disarmSystem()
+bool Central::isAlarmOn()
 {
-    if(alarmArmed) {  // check if the alarm is armed
-        alarmArmed = false;
-    }
+    return alarmAlert;
 }
 
-bool Central::isArmed()
+void Central::disarmSystem()
 {
-    return alarmArmed;
+    alarmArmed = false;
+    alarmAlert = false;
+    sirenView->stopBlinking();
+}
+
+void Central::setSirenView(SirenView* sirenView)
+{
+    this->sirenView = sirenView;
 }
 
 Central::~Central() {
     delete timer;
 }
+
+
