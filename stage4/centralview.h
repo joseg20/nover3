@@ -13,6 +13,8 @@ public:
 
     void addButtons();
     void addSiren();
+    void addLabel();
+    void addSeparator(int row);
 
 private:
     QPushButton *armButton;
