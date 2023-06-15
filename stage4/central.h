@@ -18,7 +18,7 @@ public:
     void addNewSensor(Sensor *ps);
     bool isAlarmOn();
     void setSirenView(SirenView *sirenView);
-
+    void checkCloseZones(int closeZones[]);
     ~Central();
 
 public slots:
@@ -32,7 +32,7 @@ private slots:
 private:
     bool alarmArmed;
     bool alarmAlert;
-    void checkCloseZones(bool closeZones[]);
+    //void checkCloseZones(bool closeZones[]);
     std::vector<Sensor *> zones;  // keep references to all sensors already installed in doors and windows.
     QTimer *timer;
     SirenView* sirenView;

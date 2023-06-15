@@ -5,7 +5,7 @@
 
 Central::Central(QObject *parent)
     : QObject(parent), timer(new QTimer(this)) {
-    connect(timer, SIGNAL(timeout()), this, SLOT(checkZones())); //Editado
+    connect(timer, SIGNAL(timeout()), this, SLOT(checkZones()));
     timer->start(200);
     alarmAlert = false;
 }
@@ -16,9 +16,9 @@ void Central::addNewSensor(Sensor *ps) {
 
 void Central::checkZones()
 {
-        bool closeZones[2];
+        int closeZones[2];
         checkCloseZones(closeZones);
-        if (!(closeZones[0] && closeZones[1])){
+        if ((closeZones[0]+closeZones[1])){
             std::cout << "Alguna zona esta abierta." << std::endl;
             if(alarmArmed){
                 sirenView->startBlinking();
@@ -29,17 +29,20 @@ void Central::checkZones()
         }
 }
 
+void Central::checkCloseZones(int closeZones[]) {
+        closeZones[0] = 0;
+        closeZones[1] = 0;
 
-void Central::checkCloseZones(bool closeZones[]) {
-    closeZones[0] = closeZones[1] = true;
-    for (unsigned int i = 0; i < zones.size(); i++){
-        closeZones[zones[i]->getZone()] = zones[i]->isClose(); //Editado
-    }
+        for (unsigned int i = 0; i < zones.size(); i++){
+            if (!zones[i]->isClose()) {
+                closeZones[zones[i]->getZone()] +=1;
+            }
+        }
 }
 
 void Central::armSystem()
 {
-    if(!alarmAlert) {  // check if the alarm is not already armed
+    if(!alarmAlert) {
         alarmArmed = true;
     }
 }

@@ -30,12 +30,24 @@ void CentralView::addButtons()
 
     // connect buttons to arm and disarm functions
     connect(armButton, &QPushButton::clicked, this, [this]() {
-        if (central->isAlarmOn() == true){
-            statusLabel->setText("System status: not armed!");
+        if (central->isAlarmOn()) {
+            int closeZones[2];
+            central->checkCloseZones(closeZones);
+            if (closeZones[0]>0 && closeZones[1]>0) {
+                statusLabel->setText("Zonas 0 y 1 están abiertas");
+            }
+            else if (closeZones[0]) {
+                statusLabel->setText("Zone 0 se encuentra abierta");
+            }
+            else if (closeZones[1]) {
+                statusLabel->setText("Zone 1 se encuentra abierta");
+            }
+
         } else {
             central->armSystem();
             statusLabel->setText("System status: Armed");
         }
+
     });
     connect(disarmButton, &QPushButton::clicked, this, [this]() {
         central->disarmSystem();
@@ -46,7 +58,7 @@ void CentralView::addButtons()
 
 void CentralView::addLabel()
 {
-    statusLabel = new QLabel("System status: Unknown");
+    statusLabel = new QLabel("System status: Disarmed");
     statusLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     statusLabel->setAlignment(Qt::AlignCenter);
 
