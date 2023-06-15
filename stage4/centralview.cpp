@@ -4,7 +4,7 @@
 #include <QPushButton>
 #include <QGraphicsLinearLayout>
 
-CentralView::CentralView() : armButton(new QPushButton("Arm")), disarmButton(new QPushButton("Disarm")),
+CentralView::CentralView(Central* central) : central(central), armButton(new QPushButton("Arm")), disarmButton(new QPushButton("Disarm")),
     armButtonProxy(new QGraphicsProxyWidget), disarmButtonProxy(new QGraphicsProxyWidget)
 {
     addButtons();
@@ -26,22 +26,36 @@ void CentralView::addButtons()
     layout->addItem(disarmButtonProxy, 3, 1);
 
     this->setLayout(layout);
+
+    // connect buttons to arm and disarm functions
+    connect(armButton, &QPushButton::clicked, this, [this]() {
+        central->armSystem();
+        statusLabel->setText("System status: Armed");
+    });
+    connect(disarmButton, &QPushButton::clicked, this, [this]() {
+        central->disarmSystem();
+        statusLabel->setText("System status: Disarmed");
+    });
+
 }
+
 
 
 void CentralView::addLabel()
 {
-    QLabel *label = new QLabel("Display");
-    label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    label->setAlignment(Qt::AlignCenter);
+    statusLabel = new QLabel("System status: Unknown");
+    statusLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    statusLabel->setAlignment(Qt::AlignCenter);
 
     QGraphicsProxyWidget *labelProxy = new QGraphicsProxyWidget;
-    labelProxy->setWidget(label);
+    labelProxy->setWidget(statusLabel);
 
     QGraphicsGridLayout *layout = static_cast<QGraphicsGridLayout*>(this->layout());
-    layout->addItem(labelProxy,2, 0, 1, 2);
+    layout->addItem(labelProxy, 2, 0, 1, 2);
     layout->setAlignment(labelProxy, Qt::AlignCenter);
 }
+
+
 
 void CentralView::addSiren()
 {

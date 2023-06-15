@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
         gui.addHouseHollow(windowView);
     }
 
-    CentralView *centralView = new CentralView();
+    CentralView *centralView = new CentralView(&central);  // Pasa un puntero a Central al crear CentralView
     gui.addCentralHollow(centralView);
 
     gui.show();
